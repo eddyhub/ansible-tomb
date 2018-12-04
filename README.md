@@ -70,7 +70,7 @@ Example Playbook
 License
 -------
 
-Copyright (c) 2017, Eduard Angold
+Copyright (c) 2018, Eduard Angold
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

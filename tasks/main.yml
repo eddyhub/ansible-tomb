@@ -2,7 +2,7 @@
 # tasks file for ansible-tomb
 
 - name: install necessary tools
-  apt: name={{ item }} state=installed
+  apt: name={{ item }} state=present
   with_items: "{{ tomb_necessary_tools }}"
 
 - name: Check tomb file
@@ -35,14 +35,14 @@
     tomb_tgz: "{{tomb_name}}_{{tomb_version}}.tar.gz"
   when:
     - not ansible_unit_test
-    - ver|failed
+    - ver is failed
 
 - name: Set install url as fact unless testing
   set_fact:
     tomb_tgz_url: "{{tomb_base_url}}/{{tomb_version}}.tar.gz"
   when:
     - not ansible_unit_test
-    - ver|failed
+    - ver is failed
 
 - name: Downloading tomb archive
   get_url:
@@ -51,7 +51,7 @@
     mode: 0644
   when:
     - not ansible_unit_test
-    - ver|failed
+    - ver is failed
 
 - name: unarchive tomb and copy tomb
   unarchive:
@@ -67,7 +67,7 @@
       - "*/tomb"
   when:
     - not ansible_unit_test
-    - ver|failed
+    - ver is failed
 
 - name: Create man page dir
   file:
@@ -75,7 +75,7 @@
     state: directory
   when:
     - not ansible_unit_test
-    - ver|failed
+    - ver is failed
 
 - name: unarchive tomb manpage
   unarchive:
@@ -91,7 +91,7 @@
       - "*/doc/tomb.1"
   when:
     - not ansible_unit_test
-    - ver|failed
+    - ver is failed
 
 - name: Remove archive
   file:
@@ -99,8 +99,8 @@
     path: "/tmp/{{tomb_tgz}}"
   when:
     - not ansible_unit_test
-    - ver|failed
+    - ver is failed
 
 - name: install optional tools
-  apt: name={{ item }} state=installed
+  apt: name={{ item }} state=present
   with_items: "{{ tomb_optional_tools }}"
