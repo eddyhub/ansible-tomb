@@ -1,0 +1,66 @@
+---
+# tasks file for ansible-tomb
+
+- name: Set archive name as fact unless testing
+  set_fact:
+    tomb_tgz: "{{tomb_name}}_{{tomb_version}}.tar.gz"
+  when: not ansible_unit_test
+
+- name: Set install url as fact unless testing
+  set_fact:
+    tomb_tgz_url: "{{tomb_base_url}}/{{tomb_version}}.tar.gz"
+
+- name: install necessary tools
+  apt: name={{ item }} state=present
+  with_items: "{{ tomb_necessary_tools }}"
+
+- name: Downloading tomb archive
+  get_url:
+    url: "{{tomb_tgz_url}}"
+    dest: "/tmp/{{tomb_tgz}}"
+    mode: 0644
+  when: not ansible_unit_test
+
+- name: unarchive tomb and copy tomb
+  unarchive:
+    copy: no
+    src: "/tmp/{{tomb_tgz}}"
+    dest: "{{tomb_install_directory}}"
+    owner: "{{tomb_owner}}"
+    group: "{{tomb_group}}"
+    mode: "{{tomb_mode}}"
+    extra_opts:
+      - "--strip=1"
+      - "--wildcards"
+      - "*/tomb"
+  when: not ansible_unit_test
+
+- name: Create man page dir
+  file:
+    path: "{{tomb_manpage_directory}}"
+    state: directory
+  when: not ansible_unit_test
+
+- name: unarchive tomb manpage
+  unarchive:
+    copy: no
+    src: "/tmp/{{tomb_tgz}}"
+    dest: "{{tomb_manpage_directory}}"
+    owner: "{{tomb_owner}}"
+    group: "{{tomb_group}}"
+    mode: 644
+    extra_opts:
+      - "--strip=2"
+      - "--wildcards"
+      - "*/doc/tomb.1"
+  when: not ansible_unit_test
+
+- name: Remove archive
+  file:
+    state: absent
+    path: "/tmp/{{tomb_tgz}}"
+  when: not ansible_unit_test
+
+- name: install optional tools
+  apt: name={{ item }} state=present
+  with_items: "{{ tomb_optional_tools }}"
