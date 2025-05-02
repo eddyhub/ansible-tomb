@@ -5,21 +5,43 @@ tomb_base_url: 'https://github.com/dyne/Tomb/archive'
 tomb_package_meta_json: 'https://api.github.com/repos/dyne/Tomb/tags'
 
 tomb_necessary_tools:
-  - zsh
-  - sudo
-  - gnupg
-  - cryptsetup
-  - pinentry-curses
+  Ubuntu:
+    - zsh
+    - sudo
+    - gnupg
+    - cryptsetup
+    - pinentry-curses
+  Fedora:
+    - zsh
+    - sudo
+    - gnupg2
+    - cryptsetup
+    - pinentry-tty
 
 tomb_optional_tools:
-  - lsof
-  - dcfldd
-  - steghide
-  - e2fsprogs
-  - qrencode
-  - mlocate
-  - swish++
-  - unoconv
-  - haveged
-  - wipe
-  - swish-e
+  Ubuntu:
+    - lsof
+    - dcfldd
+    - steghide
+    - e2fsprogs
+    - qrencode
+    - plocate
+    - recoll
+    - unoconv
+    - haveged
+    - coreutils
+    - acl
+    - argon2
+  Fedora:
+    - lsof
+    - dcfldd
+    - steghide
+    - e2fsprogs
+    - qrencode
+    - plocate
+    - recoll
+    - unoconv
+    - haveged
+    - coreutils
+    - acl
+    - argon2

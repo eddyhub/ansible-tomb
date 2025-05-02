@@ -2,32 +2,32 @@
 # tasks file for ansible-tomb
 
 - name: Check tomb file
-  stat:
+  ansible.builtin.stat:
     path: "{{tomb_install_directory}}/{{tomb_name}}"
   register: tomb_executable
 
 - name: get tomb version info
-  shell: |
-    grep 'VERSION="{{tomb_version | replace('v', '')}}"' {{tomb_install_directory}}/{{tomb_name}}
+  ansible.builtin.shell: |
+    grep 'VERSION="{{tomb_version | replace('v', '')}}.*"' {{tomb_install_directory}}/{{tomb_name}}
   register: desired_version_installed
   when: tomb_executable.stat.exists
 
 - name: Get latest version info
-  uri:
+  ansible.builtin.uri:
     url: "{{tomb_package_meta_json}}"
     method: GET
     return_content: yes
   register: latest_version_info
 
 - name: Set latest version as fact
-  set_fact:
+  ansible.builtin.set_fact:
     tomb_version: "{{ (latest_version_info.content|from_json|first).name }}"
   when: tomb_version == "latest"
 
 - name: Set archive name as fact unless testing
-  set_fact:
+  ansible.builtin.set_fact:
     tomb_tgz: "{{tomb_name}}_{{tomb_version}}.tar.gz"
   when: not ansible_unit_test
 
-- include: "install.yml"
+- ansible.builtin.import_tasks: "install.yml"
   when: not tomb_executable.stat.exists or not desired_version_installed

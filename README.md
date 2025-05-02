@@ -4,7 +4,7 @@ ansible-tomb
 [![BSD License](http://img.shields.io/badge/license-BSD-blue.svg)](http://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/eddyhub/ansible-tomb.svg?branch=master)](https://travis-ci.org/eddyhub/ansible-tomb)
 
-Ansible role for managing tomb installation from https://nuetzlich.net/tomb/
+Ansible role for managing tomb installation from https://dyne.org/tomb/
 
 Installation
 ------------
